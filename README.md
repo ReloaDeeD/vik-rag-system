@@ -22,31 +22,6 @@
 - **Sentence-Transformers** — модель `paraphrase-multilingual-MiniLM-L12-v2` для эмбеддингов
 - **SQLite** — реляционная БД метаданных и журнала запросов (таблицы `documents`, `chunks`, `query_log`)
 
-## Структура проекта
-
-```
-vik-rag-system/
-├── architecture/
-│   └── architecture.md
-├── docs/                    # ТОЛЬКО документы для поиска
-│   ├── reglament.txt        
-│   ├── security.md
-│   └── vacation.md
-├── sql/
-│   └── schema.sql
-├── experiments/             # учебные скрипты шагов 1–3
-│   ├── first_search.py
-│   ├── load_document.py
-│   ├── read_doc.py
-│   ├── README.md
-│   └── test_cases.md            # инженерный блокнот (НЕ в docs/)
-├── indexer.py
-├── search_with_sources.py
-├── init_db.py
-├── requirements.txt         # список зависимостей
-└── README.md
-```
-
 ## Установка и запуск
 
 ### Требования
@@ -77,6 +52,9 @@ python indexer.py docs
 
 # 6. Запустить поиск
 python search_with_sources.py "ваш вопрос"
+
+# 7. Запустить веб-интерфейс (в отдельном терминале)
+streamlit run app.py
 ```
 
 Первый запуск скачает модель эмбеддингов (~500 МБ), последующие запуски быстрые.
