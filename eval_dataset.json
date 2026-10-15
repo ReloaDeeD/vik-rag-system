@@ -1,0 +1,242 @@
+[
+  {
+    "question": "сколько дней длится отпуск?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "28 календарных дней",
+    "category": "простой"
+  },
+  {
+    "question": "какая длина пароля по политике безопасности?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "не менее 12 символов",
+    "category": "простой"
+  },
+  {
+    "question": "когда подавать заявление на отпуск?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "не позднее чем за 14 календарных дней",
+    "category": "простой"
+  },
+  {
+    "question": "что делать при подозрительном письме?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "переслать на security@company.ru",
+    "category": "простой"
+  },
+  {
+    "question": "как оформить отпуск за свой счёт?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "заявление руководителю не позднее чем за 5 рабочих дней, срок до 14 дней",
+    "category": "простой"
+  },
+  {
+    "question": "какой минимальный срок непрерывного отпуска?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "14 календарных дней",
+    "category": "простой"
+  },
+  {
+    "question": "как часто менять пароль?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "каждые 90 дней",
+    "category": "простой"
+  },
+  {
+    "question": "когда выплачиваются отпускные?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "не позднее чем за 3 рабочих дня до начала отпуска",
+    "category": "простой"
+  },
+  {
+    "question": "через сколько минут блокируется компьютер?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "через 5 минут неактивности",
+    "category": "простой"
+  },
+  {
+    "question": "как передать конфиденциальные данные?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "через защищённый файловый обменник, не по почте",
+    "category": "простой"
+  },
+  {
+    "question": "можно ли подключить личный ноутбук к сети?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "запрещено, использовать гостевой Wi-Fi",
+    "category": "простой"
+  },
+  {
+    "question": "как установить новое ПО?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "через корпоративный каталог приложений с тикетом",
+    "category": "простой"
+  },
+  {
+    "question": "сколько хранятся записи видеонаблюдения?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "30 дней",
+    "category": "простой"
+  },
+  {
+    "question": "когда утверждается график отпусков?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "до 15 декабря на следующий год",
+    "category": "простой"
+  },
+  {
+    "question": "можно ли перенести отпуск на следующий год?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "да, по производственной необходимости или болезни",
+    "category": "простой"
+  },
+  {
+    "question": "что нужно для доступа к конфиденциальным документам?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "подписать соглашение о неразглашении (NDA)",
+    "category": "простой"
+  },
+  {
+    "question": "как заблокировать компьютер вручную?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "Win+L",
+    "category": "простой"
+  },
+  {
+    "question": "сколько раз в год можно делить отпуск на части?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "не более 3 раз",
+    "category": "простой"
+  },
+  {
+    "question": "когда подаётся заявка на отпуск через HR-портал?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "не позднее 1 ноября",
+    "category": "простой"
+  },
+  {
+    "question": "что будет за плохой пароль?",
+    "expected_sources": ["reglament.txt", "security.md"],
+    "expected_answer": "проверка всего отдела",
+    "category": "несколько источников"
+  },
+  {
+    "question": "как оформить отпуск и получить отпускные?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "заявление за 14 дней, выплата за 3 дня",
+    "category": "несколько источников"
+  },
+  {
+    "question": "что будет за распространение конфиденциальных данных?",
+    "expected_sources": ["reglament.txt", "security.md"],
+    "expected_answer": "штраф с возможным увольнением",
+    "category": "несколько источников"
+  },
+  {
+    "question": "как защитить персональные данные?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "шифрование, защищённые серверы, NDA",
+    "category": "несколько источников"
+  },
+  {
+    "question": "какие правила безопасности при работе с документами?",
+    "expected_sources": ["reglament.txt", "security.md"],
+    "expected_answer": "ГОСТ, пароли, NDA, блокировка компьютера",
+    "category": "несколько источников"
+  },
+  {
+    "question": "какая у нас зарплата?",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  },
+  {
+    "question": "где находится офис?",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  },
+  {
+    "question": "кто директор компании?",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  },
+  {
+    "question": "какой график работы?",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  },
+  {
+    "question": "какие бонусы у сотрудников?",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  },
+  {
+    "question": "как пройти собеседование?",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  },
+  {
+    "question": "какие вакансии открыты?",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  },
+  {
+    "question": "как связаться с HR-отделом?",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  },
+  {
+    "question": "как отдохнуть летом?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "28 календарных дней отпуска",
+    "category": "перефразирование"
+  },
+  {
+    "question": "что делать, если забыл пароль?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "менять через систему самообслуживания каждые 90 дней",
+    "category": "перефразирование"
+  },
+  {
+    "question": "как защитить данные?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "шифрование, защищённые серверы, NDA",
+    "category": "перефразирование"
+  },
+  {
+    "question": "можно ли взять отгул?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "отпуск за свой счёт до 14 дней",
+    "category": "неточный термин"
+  },
+  {
+    "question": "как получить пропуск?",
+    "expected_sources": ["security.md"],
+    "expected_answer": "подписать NDA для доступа",
+    "category": "неточный термин"
+  },
+  {
+    "question": "где документы про отпуск?",
+    "expected_sources": ["vacation.md"],
+    "expected_answer": "vacation.md",
+    "category": "неточный термин"
+  },
+  {
+    "question": "когда обед?",
+    "expected_sources": ["reglament.txt"],
+    "expected_answer": "с 12:00 до 14:00",
+    "category": "простой"
+  },
+  {
+    "question": "оскваондвеф",
+    "expected_sources": [],
+    "expected_answer": "нет ответа",
+    "category": "ловушка"
+  }
+]
