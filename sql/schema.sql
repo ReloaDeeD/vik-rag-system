@@ -13,6 +13,7 @@ CREATE TABLE IF NOT EXISTS chunks (
     chunk_index INTEGER NOT NULL,
     content     TEXT NOT NULL,
     char_count  INTEGER,
+    locator     TEXT, 
     FOREIGN KEY (document_id) REFERENCES documents(id),
     UNIQUE(document_id, chunk_index)
 );
