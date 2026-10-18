@@ -31,6 +31,7 @@ class Hit:
     score: float
     source: str = ""
     vec_dist: float = -1.0
+    locator: str = ""         
 
 
 # --- Ленивые глобалы ---
@@ -42,15 +43,13 @@ _sql = None
 
 def _load_all():
     global _bm25, _bm25_ids, _chroma_coll, _sql
-
     if _sql is None:
-        _sql = sqlite3.connect(DB_PATH)
-
+        # Добавляем check_same_thread=False для совместимости со Streamlit
+        _sql = sqlite3.connect(DB_PATH, check_same_thread=False)
     if _chroma_coll is None:
         ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=EMBED_MODEL)
         client = chromadb.PersistentClient(path=CHROMA_PATH)
         _chroma_coll = client.get_or_create_collection("corp_docs", embedding_function=ef)
-
     if _bm25 is None:
         rows = _sql.execute("SELECT id, content FROM chunks").fetchall()
         _bm25_ids = [r[0] for r in rows]
@@ -61,16 +60,21 @@ def _load_all():
 def _vector_search(question: str, top_k: int) -> list[Hit]:
     result = _chroma_coll.query(query_texts=[question], n_results=top_k)
     hits = []
-    for doc, dist, meta in zip(result["documents"][0], result["distances"][0], result["metadatas"][0]):
-        hits.append(Hit(
-            chunk_id=meta["chunk_id"],
-            content=doc,
-            title=meta["title"],
-            chunk_index=meta["chunk_index"],
-            score=1.0 / (1.0 + dist),
-            source="vector",
-            vec_dist=dist
-        ))
+    for doc, dist, meta in zip(
+        result["documents"][0], result["distances"][0], result["metadatas"][0]
+    ):
+        hits.append(
+            Hit(
+                chunk_id=meta["chunk_id"],
+                content=doc,
+                title=meta["title"],
+                chunk_index=meta["chunk_index"],
+                score=1.0 / (1.0 + dist),
+                source="vector",
+                vec_dist=dist,
+                locator=meta.get("locator", ""),   
+            )
+        )
     return hits
 
 
@@ -82,19 +86,24 @@ def _bm25_search(question: str, top_k: int) -> list[Hit]:
     for idx in ranked:
         chunk_id = _bm25_ids[idx]
         row = _sql.execute(
-            "SELECT c.content, c.chunk_index, d.title FROM chunks c "
-            "JOIN documents d ON c.document_id = d.id WHERE c.id = ?",
-            (chunk_id,)
+            "SELECT c.content, c.chunk_index, d.title, c.locator "
+            "FROM chunks c "
+            "JOIN documents d ON c.document_id = d.id "
+            "WHERE c.id = ?",
+            (chunk_id,),
         ).fetchone()
         if row:
-            hits.append(Hit(
-                chunk_id=chunk_id,
-                content=row[0],
-                title=row[2],
-                chunk_index=row[1],
-                score=float(scores[idx]),
-                source="bm25"
-            ))
+            hits.append(
+                Hit(
+                    chunk_id=chunk_id,
+                    content=row[0],
+                    title=row[2],
+                    chunk_index=row[1],
+                    score=float(scores[idx]),
+                    source="bm25",
+                    locator=row[3] or "",       
+                )
+            )
     return hits
 
 
@@ -108,12 +117,15 @@ def _rrf_fusion(vector_hits: list[Hit], bm25_hits: list[Hit], top_k: int) -> lis
             chunk_index=h.chunk_index,
             score=1.0 / (RRF_K + rank + 1),
             source="vector",
-            vec_dist=h.vec_dist
+            vec_dist=h.vec_dist,
+            locator=h.locator,                  
         )
     for rank, h in enumerate(bm25_hits):
         if h.chunk_id in agg:
             agg[h.chunk_id].score += 1.0 / (RRF_K + rank + 1)
             agg[h.chunk_id].source = "hybrid"
+            if not agg[h.chunk_id].locator:
+                agg[h.chunk_id].locator = h.locator   
         else:
             agg[h.chunk_id] = Hit(
                 chunk_id=h.chunk_id,
@@ -121,7 +133,8 @@ def _rrf_fusion(vector_hits: list[Hit], bm25_hits: list[Hit], top_k: int) -> lis
                 title=h.title,
                 chunk_index=h.chunk_index,
                 score=1.0 / (RRF_K + rank + 1),
-                source="bm25"
+                source="bm25",
+                locator=h.locator,              
             )
     return sorted(agg.values(), key=lambda x: x.score, reverse=True)[:top_k]
 
@@ -142,20 +155,20 @@ def _rerank(question: str, hits: list[Hit], top_k: int) -> list[Hit]:
         "stream": False,
         "options": {"temperature": 0.0},
     }).encode("utf-8")
-    req = urllib.request.Request(OLLAMA_URL, data=payload, headers={"Content-Type": "application/json"})
+    req = urllib.request.Request(
+        OLLAMA_URL, data=payload, headers={"Content-Type": "application/json"}
+    )
     try:
         with urllib.request.urlopen(req, timeout=120) as resp:
             raw = json.loads(resp.read().decode("utf-8"))["response"]
         order = [int(x) for x in raw.replace(".", ",").split(",") if x.strip().isdigit()]
         order = [n for n in order if 1 <= n <= len(hits)]
-        # Дедупликация: сохраняем порядок, но убираем повторы
         seen = set()
         unique_order = []
         for n in order:
             if n not in seen:
                 seen.add(n)
                 unique_order.append(n)
-        # Добавляем пропущенные номера в конце
         unique_order += [i for i in range(1, len(hits) + 1) if i not in seen]
         ranked = [hits[n - 1] for n in unique_order]
     except Exception:
@@ -171,13 +184,9 @@ def hybrid_search(question: str) -> list[Hit]:
     _load_all()
     v = _vector_search(question, TOP_K_RECALL)
     b = _bm25_search(question, TOP_K_RECALL)
-    
-    # Пороги-привратники: отсекаем шум до fusion
-    v = [h for h in v if h.score >= 1.0 / (1.0 + 0.7)]  # старое расстояние 0.7 в новой шкале
+    v = [h for h in v if h.score >= 1.0 / (1.0 + 0.7)]
     b = [h for h in b if h.score > 0.0]
-    
     if not v and not b:
         return []
-    
     fused = _rrf_fusion(v, b, TOP_K_FUSION)
     return _rerank(question, fused, TOP_K_FINAL)

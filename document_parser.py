@@ -1,4 +1,4 @@
-import fitz  # PyMuPDF
+import pymupdf as fitz
 import docx
 from pathlib import Path
 from dataclasses import dataclass
