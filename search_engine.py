@@ -60,19 +60,25 @@ def _load_all():
 def _vector_search(question: str, top_k: int) -> list[Hit]:
     result = _chroma_coll.query(query_texts=[question], n_results=top_k)
     hits = []
+    if not result["documents"] or not result["documents"][0]:
+        return hits
+        
     for doc, dist, meta in zip(
         result["documents"][0], result["distances"][0], result["metadatas"][0]
     ):
+        if meta is None:  # <-- ЗАЩИТА: если метаданных нет, пропускаем
+            continue
+            
         hits.append(
             Hit(
-                chunk_id=meta["chunk_id"],
+                chunk_id=meta.get("chunk_id", 0),
                 content=doc,
-                title=meta["title"],
-                chunk_index=meta["chunk_index"],
+                title=meta.get("title", "Unknown"),
+                chunk_index=meta.get("chunk_index", 0),
                 score=1.0 / (1.0 + dist),
                 source="vector",
                 vec_dist=dist,
-                locator=meta.get("locator", ""),   
+                locator=meta.get("locator", ""),
             )
         )
     return hits
