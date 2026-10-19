@@ -1,6 +1,7 @@
 import hashlib
 import sqlite3
 import sys
+import re
 from pathlib import Path
 
 import chromadb
@@ -12,20 +13,68 @@ from document_parser import parse_document, ParsedBlock
 DB_PATH = Path("data/metadata.db")
 CHROMA_PATH = Path("data/chroma")
 EMBED_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
-ALLOWED = {".txt", ".md", ".pdf", ".docx"} # <-- Добавили форматы
+ALLOWED = {".txt", ".md", ".pdf", ".docx"} 
 
-def chunk_blocks(blocks: list[ParsedBlock], max_size: int = 600) -> list[tuple[str, str]]:
-    """Режет блоки на чанки. Возвращает список кортежей (текст_чанка, локатор)."""
+def chunk_blocks(blocks: list[ParsedBlock], min_size: int = 250, max_size: int = 800) -> list[tuple[str, str]]:
+    """
+    Умный чанкинг:
+    1. Склеивает короткие абзацы, пока не наберется min_size.
+    2. Если чанк превышает max_size, режет его по предложениям, а не по символам.
+    3. Формирует красивый локатор (например, "параграф 4 – параграф 6").
+    """
     chunks = []
-    for block in blocks:
-        para = block.text
-        if len(para) <= max_size:
-            chunks.append((para, block.locator))
+    current_text = ""
+    current_locs = []
+
+    def flush_chunk():
+        """Сохраняет накопленный текст в список чанков."""
+        nonlocal current_text, current_locs
+        if not current_text.strip():
+            return
+
+        # Формируем красивый локатор
+        if len(current_locs) == 1:
+            loc_str = current_locs[0]
         else:
-            step = max_size - 100
-            for i in range(0, len(para), step):
-                chunk_part = para[i:i + max_size]
-                chunks.append((chunk_part, block.locator))
+            # Убираем дубликаты локаторов, сохраняя порядок
+            unique_locs = list(dict.fromkeys(current_locs))
+            loc_str = f"{unique_locs[0]} – {unique_locs[-1]}" if len(unique_locs) > 1 else unique_locs[0]
+
+        # Если текст слишком длинный, режем по предложениям
+        if len(current_text) > max_size:
+            # Разбиваем по точкам, вопросительным и восклицательным знакам
+            sentences = re.split(r'(?<=[.!?])\s+', current_text)
+            temp_text = ""
+            for sent in sentences:
+                if len(temp_text) + len(sent) > max_size and temp_text:
+                    chunks.append((temp_text.strip(), loc_str))
+                    temp_text = sent + " "
+                else:
+                    temp_text += sent + " "
+            if temp_text.strip():
+                chunks.append((temp_text.strip(), loc_str))
+        else:
+            chunks.append((current_text.strip(), loc_str))
+
+        # Сбрасываем буфер
+        current_text = ""
+        current_locs = []
+
+    for block in blocks:
+        text = block.text.strip()
+        if not text:
+            continue
+
+        # Если добавление нового блока превысит max_size, а мы уже набрали min_size — сохраняем чанк
+        if len(current_text) + len(text) > max_size and len(current_text) >= min_size:
+            flush_chunk()
+
+        current_text += text + " "
+        current_locs.append(block.locator)
+
+    # Сохраняем то, что осталось в буфере в конце
+    flush_chunk()
+    
     return chunks
 
 def connect():
@@ -91,7 +140,7 @@ def index_document(path: Path, sql, coll) -> str:
             "document_id": doc_id, 
             "chunk_index": i, 
             "title": path.name,
-            "locator": locator  # <-- Передаем в ChromaDB для поиска
+            "locator": locator  
         })
 
     coll.upsert(
