@@ -115,7 +115,7 @@
   },
   {
     "question": "что будет за плохой пароль?",
-    "expected_sources": ["reglament.txt", "security.md"],
+    "expected_sources": ["reglament.md", "security.md"],
     "expected_answer": "проверка всего отдела",
     "category": "несколько источников"
   },
@@ -127,7 +127,7 @@
   },
   {
     "question": "что будет за распространение конфиденциальных данных?",
-    "expected_sources": ["reglament.txt", "security.md"],
+    "expected_sources": ["reglament.md", "security.md"],
     "expected_answer": "штраф с возможным увольнением",
     "category": "несколько источников"
   },
@@ -139,7 +139,7 @@
   },
   {
     "question": "какие правила безопасности при работе с документами?",
-    "expected_sources": ["reglament.txt", "security.md"],
+    "expected_sources": ["reglament.md", "security.md"],
     "expected_answer": "ГОСТ, пароли, NDA, блокировка компьютера",
     "category": "несколько источников"
   },
@@ -229,7 +229,7 @@
   },
   {
     "question": "когда обед?",
-    "expected_sources": ["reglament.txt"],
+    "expected_sources": ["reglament.md"],
     "expected_answer": "с 12:00 до 14:00",
     "category": "простой"
   },

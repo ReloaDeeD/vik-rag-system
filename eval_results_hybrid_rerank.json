@@ -1,0 +1,1115 @@
+{
+  "mode": "hybrid_rerank",
+  "metrics": {
+    "faithfulness": 0.925,
+    "context_precision": 0.825,
+    "answer_relevancy": 0.675
+  },
+  "results": [
+    {
+      "question": "сколько дней длится отпуск?",
+      "category": "простой",
+      "answer": "Ежегодный оплачиваемый отпуск составляет 28 календарных дней для всех сотрудников. Дополнительный отпуск предоставляется за ненормированный рабочий день (3 дня), работу в условиях Крайнего Севера (до 24 дней) и вредные условия труда (до 7 дней).",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "какая длина пароля по политике безопасности?",
+      "category": "простой",
+      "answer": "Согласно политике безопасности, пароль должен быть длиной не менее 12 символов.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "когда подавать заявление на отпуск?",
+      "category": "простой",
+      "answer": "Заявление на отпуск подаётся в отдел кадров не позднее чем за 14 календарных дней до начала отпуска через электронную систему документооборота. Бумажная копия с подписью передаётся непосредственному руководителю. [1], [2]",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "что делать при подозрительном письме?",
+      "category": "простой",
+      "answer": "В предоставленных документах нет информации о том, что делать при подозрительном письме.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как оформить отпуск за свой счёт?",
+      "category": "простой",
+      "answer": "Отпуск за свой счёт оформляется путём подачи заявления руководителю не позднее чем за 5 рабочих дней до начала отпуска. Заявление подается через электронную систему документооборота в отдел кадров не позднее чем за 14 календарных дней до начала отпуска.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "какой минимальный срок непрерывного отпуска?",
+      "category": "простой",
+      "answer": "Минимальный срок непрерывного отпуска составляет 14 календарных дней.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как часто менять пароль?",
+      "category": "простой",
+      "answer": "Согласно правилам, размещённым в файле [1] (security.md), пароли должны меняться каждые 90 дней через систему самообслуживания.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "когда выплачиваются отпускные?",
+      "category": "простой",
+      "answer": "Отпускные выплачиваются не позднее чем за 3 рабочих дня до начала отпуска.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "через сколько минут блокируется компьютер?",
+      "category": "простой",
+      "answer": "Рабочие компьютеры блокируются автоматически через 5 минут неактивности. Ручная блокировка (Win+L) обязательна при каждом отходе от рабочего места, даже на минуту.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как передать конфиденциальные данные?",
+      "category": "простой",
+      "answer": "Передача конфиденциальных данных запрещена по электронной почте. Используйте защищённый файловый обменник компании для передачи таких данных.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "можно ли подключить личный ноутбук к сети?",
+      "category": "простой",
+      "answer": "Подключение личного ноутбука к корпоративной сети запрещено. Для работы с личными устройствами используется гостевая Wi-Fi сеть без доступа к внутренним ресурсам.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как установить новое ПО?",
+      "category": "простой",
+      "answer": "Для установки нового ПО в компании необходимо запросить его через тикет-систему с обоснованием бизнес-необходимости.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "bm25"
+        }
+      ]
+    },
+    {
+      "question": "сколько хранятся записи видеонаблюдения?",
+      "category": "простой",
+      "answer": "Записи видеонаблюдения хранятся 30 дней.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "когда утверждается график отпусков?",
+      "category": "простой",
+      "answer": "График отпусков утверждается руководителем подразделения до 15 декабря на следующий год.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "можно ли перенести отпуск на следующий год?",
+      "category": "простой",
+      "answer": "Перенос отпуска на следующий год возможен по производственной необходимости (с письменного согласия сотрудника) или по болезни (при предоставлении больничного листа).",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "что нужно для доступа к конфиденциальным документам?",
+      "category": "простой",
+      "answer": "Доступ к конфиденциальным документам предоставляется только после подписания соглашения о неразглашении (NDA). Уровень доступа определяется руководителем подразделения на основе должностных обязанностей.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как заблокировать компьютер вручную?",
+      "category": "простой",
+      "answer": "В предоставленных документах нет информации о том, как заблокировать компьютер вручную.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "vector"
+        }
+      ]
+    },
+    {
+      "question": "сколько раз в год можно делить отпуск на части?",
+      "category": "простой",
+      "answer": "Разделение отпуска на части допускается с одной частью, которая должна быть не менее 14 календарных дней непрерывно. Оставшиеся дни можно использовать по согласованию с руководителем, но не более 3 раз в год.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "когда подаётся заявка на отпуск через HR-портал?",
+      "category": "простой",
+      "answer": "Заявка на отпуск подаётся через HR-портал не позднее 1 ноября.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "что будет за плохой пароль?",
+      "category": "несколько источников",
+      "answer": "За плохой пароль, который не соответствует требованиям безопасности компании, могут быть применены меры наказания, включая проверку всего отдела на предмет его изменения.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как оформить отпуск и получить отпускные?",
+      "category": "несколько источников",
+      "answer": "Отпуск оформляется через электронную систему документооборота, подав заявку не позднее чем за 14 календарных дней до начала отпуска. Для получения отпускных необходимо предоставить документы, основанные на требованиях ГОСТа, и подтвердить отпускные дни в соответствии с графиком отпусков, утверждённым руководителем подразделения.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "что будет за распространение конфиденциальных данных?",
+      "category": "несколько источников",
+      "answer": "За распространение конфиденциальных данных компании учтено наказание в виде штрафа с возможным увольнением.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как защитить персональные данные?",
+      "category": "несколько источников",
+      "answer": "Для защиты персональных данных в компании используется зашифрованный хранения этих данных на защищённых серверах. Передача персональных данных по электронной почте запрещена и вместо этого следует использовать защищённый файловый обменник компании.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "какие правила безопасности при работе с документами?",
+      "category": "несколько источников",
+      "answer": "В соответствии с правилами из документа [3] (security.md, text block 5 – text block 8), доступ к конфиденциальным документам предоставляется только после подписания соглашения о неразглашении (NDA). Уровень доступа определяется руководителем подразделения на основе должностных обязанностей. Персональные данные клиентов и сотрудников хранятся в зашифрованном виде на защищённых серверах, и передача данных по электронной почте запрещена. Для работы с личными устройствами используется гостевая Wi-Fi сеть без доступа к внутренним ресурсам. Любые подозрительные письма пересылаются в отдел ИБ на адрес security@company.ru.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "какая у нас зарплата?",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет информации о вашей зарплате.",
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "где находится офис?",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет ответа на этот вопрос.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": []
+    },
+    {
+      "question": "кто директор компании?",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет ответа на этот вопрос.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": []
+    },
+    {
+      "question": "какой график работы?",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет информации о графике работы.",
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "какие бонусы у сотрудников?",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет информации о бонусах для сотрудников.",
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как пройти собеседование?",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет ответа на этот вопрос.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": []
+    },
+    {
+      "question": "какие вакансии открыты?",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет ответа на этот вопрос.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": []
+    },
+    {
+      "question": "как связаться с HR-отделом?",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет информации о том, как связаться с HR-отделом.",
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как отдохнуть летом?",
+      "category": "перефразирование",
+      "answer": "В летний период ежегодный оплачиваемый отпуск составляет 28 календарных дней. Для получения дополнительного отпуска необходимо обратиться в HR-портал не позднее 1 ноября. Заявление на отпуск подается в отдел кадров не позднее чем за 14 календарных дней до начала отпуска через электронную систему документооборота.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "vector"
+        }
+      ]
+    },
+    {
+      "question": "что делать, если забыл пароль?",
+      "category": "перефразирование",
+      "answer": "Если забыли пароль, следует обратиться в службу поддержки системы самообслуживания через форму обратной связи или по телефону, указанной в справочном материале компании. В процессе смены пароля необходимо предоставить подтверждение личности и текущий адрес электронной почты, с которой был создан аккаунт.",
+      "faithfulness": 0.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как защитить данные?",
+      "category": "перефразирование",
+      "answer": "Для защиты данных в компании используются различные меры. Сотрудники обязаны использовать сложные пароли длиной не менее 12 символов, содержащие буквы разного регистра, цифры и специальные символы. Пароль должен меняться каждые 90 дней через систему самообслуживания. Персональные данные клиентов и сотрудников хранятся в зашифрованном виде на защищённых серверах. Передача данных по электронной почте запрещена, используйте защищённый файловый обменник компании.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "security.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "security.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "reglament.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "можно ли взять отгул?",
+      "category": "неточный термин",
+      "answer": "В предоставленных документах нет информации о возможности взять отгул.",
+      "faithfulness": 1.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "как получить пропуск?",
+      "category": "неточный термин",
+      "answer": "[ОШИБКА: нет фрагментов]",
+      "faithfulness": 0.0,
+      "context_precision": 0.0,
+      "answer_relevancy": 0.0,
+      "hits": []
+    },
+    {
+      "question": "где документы про отпуск?",
+      "category": "неточный термин",
+      "answer": "Документы по вопросам отпуска расположены в файле \"vacation.md\". В нем содержатся подробные инструкции и правила по отпуску, включая информацию о предоставлении отпуска за свой счёт, компенсации за неиспользованный отпуск при увольнении, график отпусков, выплаты отпуска и разделение отпуска на части.",
+      "faithfulness": 0.0,
+      "context_precision": 1.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 2,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "rerank-cross-encoder"
+        },
+        {
+          "title": "vacation.md",
+          "chunk_index": 1,
+          "source": "rerank-cross-encoder"
+        }
+      ]
+    },
+    {
+      "question": "когда обед?",
+      "category": "простой",
+      "answer": "В предоставленных документах нет информации о времени обеда.",
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "answer_relevancy": 0.0,
+      "hits": [
+        {
+          "title": "vacation.md",
+          "chunk_index": 0,
+          "source": "vector"
+        }
+      ]
+    },
+    {
+      "question": "оскваондвеф",
+      "category": "ловушка",
+      "answer": "В предоставленных документах нет ответа на вопрос \"оскваондвеф\".",
+      "faithfulness": 1.0,
+      "context_precision": 0.0,
+      "answer_relevancy": 1.0,
+      "hits": [
+        {
+          "title": "Документ Microsoft Word.docx",
+          "chunk_index": 0,
+          "source": "vector"
+        }
+      ]
+    }
+  ]
+}

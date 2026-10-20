@@ -4,6 +4,7 @@
 import json
 import sqlite3
 import urllib.request
+from sentence_transformers import CrossEncoder
 from dataclasses import dataclass
 
 import chromadb
@@ -18,7 +19,7 @@ CHROMA_PATH = "data/chroma"
 DB_PATH = "data/metadata.db"
 TOP_K_RECALL = 20
 TOP_K_FUSION = 10
-TOP_K_FINAL = 5
+TOP_K_FINAL = 7
 RRF_K = 60
 
 
@@ -145,54 +146,68 @@ def _rrf_fusion(vector_hits: list[Hit], bm25_hits: list[Hit], top_k: int) -> lis
     return sorted(agg.values(), key=lambda x: x.score, reverse=True)[:top_k]
 
 
+_cross_encoder = None
+
 def _rerank(question: str, hits: list[Hit], top_k: int) -> list[Hit]:
+    """Переранжирование с помощью Cross-Encoder (быстро и точно)."""
+    global _cross_encoder
+    if _cross_encoder is None:
+        _cross_encoder = CrossEncoder("BAAI/bge-reranker-base")
+        
     if len(hits) <= 1:
         return hits
-    listing = "\n".join(f"{i}. {h.content[:400]}" for i, h in enumerate(hits, 1))
-    prompt = (
-        "Ниже вопрос и пронумерованные фрагменты текста. "
-        "Расставь номера фрагментов в порядке убывания полезности для ответа на вопрос. "
-        "Ответь ТОЛЬКО номерами через запятую, без других слов.\n"
-        f"Вопрос: {question}\nФрагменты:\n{listing}\nПорядок:"
-    )
-    payload = json.dumps({
-        "model": RERANK_MODEL,
-        "prompt": prompt,
-        "stream": False,
-        "options": {"temperature": 0.0},
-    }).encode("utf-8")
-    req = urllib.request.Request(
-        OLLAMA_URL, data=payload, headers={"Content-Type": "application/json"}
-    )
-    try:
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            raw = json.loads(resp.read().decode("utf-8"))["response"]
-        order = [int(x) for x in raw.replace(".", ",").split(",") if x.strip().isdigit()]
-        order = [n for n in order if 1 <= n <= len(hits)]
-        seen = set()
-        unique_order = []
-        for n in order:
-            if n not in seen:
-                seen.add(n)
-                unique_order.append(n)
-        unique_order += [i for i in range(1, len(hits) + 1) if i not in seen]
-        ranked = [hits[n - 1] for n in unique_order]
-    except Exception:
-        ranked = hits
-    for new_rank, h in enumerate(ranked):
-        h.score = 1.0 / (new_rank + 1)
-        h.source = "rerank-llm"
+        
+    pairs = [(question, h.content) for h in hits]
+    
+    scores = _cross_encoder.predict(pairs)
+    
+    for h, score in zip(hits, scores):
+        h.score = float(score)
+        
+    ranked = sorted(hits, key=lambda x: x.score, reverse=True)
+    
+    for h in ranked:
+        h.source = "rerank-cross-encoder"
+        
     return ranked[:top_k]
 
 
-def hybrid_search(question: str) -> list[Hit]:
-    """Единая точка входа: векторный + BM25 → пороги → RRF → re-ranking."""
+def search(question: str, mode: str = "hybrid_rerank") -> list[Hit]:
+    """
+    Универсальная точка входа для поиска.
+    Режимы:
+    - "vector": только векторный поиск
+    - "bm25": только BM25
+    - "hybrid": векторный + BM25 + RRF
+    - "hybrid_rerank": векторный + BM25 + RRF + переранжирование LLM (по умолчанию)
+    """
     _load_all()
-    v = _vector_search(question, TOP_K_RECALL)
-    b = _bm25_search(question, TOP_K_RECALL)
-    v = [h for h in v if h.score >= 1.0 / (1.0 + 0.7)]
-    b = [h for h in b if h.score > 0.0]
-    if not v and not b:
-        return []
-    fused = _rrf_fusion(v, b, TOP_K_FUSION)
-    return _rerank(question, fused, TOP_K_FINAL)
+    
+    if mode == "vector":
+        return _vector_search(question, TOP_K_FINAL)
+        
+    elif mode == "bm25":
+        return _bm25_search(question, TOP_K_FINAL)
+        
+    elif mode == "hybrid":
+        v = _vector_search(question, TOP_K_RECALL)
+        b = _bm25_search(question, TOP_K_RECALL)
+        v = [h for h in v if h.score >= 1.0 / (1.0 + 0.7)]
+        b = [h for h in b if h.score > 0.0]
+        if not v and not b:
+            return []
+        return _rrf_fusion(v, b, TOP_K_FINAL)
+        
+    else:  # hybrid_rerank
+        v = _vector_search(question, TOP_K_RECALL)
+        b = _bm25_search(question, TOP_K_RECALL)
+        v = [h for h in v if h.score >= 1.0 / (1.0 + 0.7)]
+        b = [h for h in b if h.score > 0.0]
+        if not v and not b:
+            return []
+        fused = _rrf_fusion(v, b, TOP_K_FUSION)
+        return _rerank(question, fused, TOP_K_FINAL)
+
+# Оставляем для обратной совместимости со старым кодом (app.py, generate_answer.py)
+def hybrid_search(question: str) -> list[Hit]:
+    return search(question, mode="hybrid_rerank")
