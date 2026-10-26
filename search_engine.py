@@ -19,7 +19,7 @@ CHROMA_PATH = "data/chroma"
 DB_PATH = "data/metadata.db"
 TOP_K_RECALL = 20
 TOP_K_FUSION = 10
-TOP_K_FINAL = 10
+TOP_K_FINAL = 5
 RRF_K = 60
 
 
