@@ -36,10 +36,21 @@ def parse_document(path: Path) -> list[ParsedBlock]:
     elif ext == ".docx":
         try:
             doc = docx.Document(path)
+            # 1. Извлекаем обычные абзацы
             for i, para in enumerate(doc.paragraphs):
                 text = para.text.strip()
                 if text:
                     blocks.append(ParsedBlock(text=text, locator=f"paragraph {i+1}"))
+            
+            # 2. ИЗМЕНЕНИЕ: Извлекаем таблицы
+            for t_idx, table in enumerate(doc.tables):
+                for r_idx, row in enumerate(table.rows):
+                    row_text = " | ".join(cell.text.strip() for cell in row.cells)
+                    if row_text.strip():
+                        blocks.append(ParsedBlock(
+                            text=f"[Table {t_idx+1}] {row_text}", 
+                            locator=f"table {t_idx+1}, row {r_idx+1}"
+                        ))
         except Exception as e:
             raise RuntimeError(f"Ошибка чтения DOCX {path.name}: {e}")
     else:

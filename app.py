@@ -22,6 +22,7 @@ RAG_PROMPT = """Ты — справочный ассистент компани�
 3. Используй источник [N] только если в его тексте содержится эта информация.
 4. Если в контексте действительно нет никакой информации по теме, отвечай: "В предоставленных документах нет ответа на этот вопрос".
 5. Не выдумывай факты, которых нет в предоставленном тексте.
+6. ЗАПРЕЩЕНО использовать вводные фразы: "Согласно документу...", "Основываясь на контексте...", "В предоставленном тексте сказано...". 
 
 История переписки:
 {history}
@@ -108,6 +109,14 @@ def handle_rag_query(prompt, history_messages):
     else:
         return "В предоставленных документах нет релевантной информации для ответа на этот вопрос.", [], rewritten_query
 
+def save_feedback(query_id: int, value: int):
+    """Сохраняет лайк (1) или дизлайк (-1) в БД."""
+    sql = sqlite3.connect("data/metadata.db")
+    sql.execute("UPDATE query_log SET feedback = ? WHERE rowid = ?", (value, query_id))
+    sql.commit()
+    sql.close()
+
+
 # --- Инициализация состояния ---
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -169,13 +178,42 @@ for i, q in enumerate(quick_queries):
 st.divider()
 
 # Отображение истории
-for message in st.session_state.messages:
+# --- Инициализация состояния ---
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+if "voted" not in st.session_state:
+    st.session_state.voted = set() # Храним ID запросов, по которым уже проголосовали
+
+for idx, message in enumerate(st.session_state.messages):
     with st.chat_message(message["role"]):
         st.markdown(message["content"])
-        if "hits" in message and message["hits"]:
-            with st.expander("Источники"):
-                for n, h in enumerate(message["hits"], start=1):
-                    st.markdown(f"**[{n}]** `{h.title}`, {h.locator} \n\n {h.content}")
+        
+        if message["role"] == "assistant":
+            # Пытаемся найти ID запроса
+            if idx > 0:
+                sql = sqlite3.connect("data/metadata.db")
+                logs = sql.execute("SELECT rowid FROM query_log ORDER BY asked_at ASC").fetchall()
+                sql.close()
+                
+                log_idx = (idx - 1) // 2
+                if log_idx < len(logs):
+                    query_id = logs[log_idx][0]
+                    
+                    # Проверяем, голосовал ли пользователь за этот ответ
+                    if query_id not in st.session_state.voted:
+                        col1, col2, _ = st.columns([0.05, 0.05, 0.9])
+                        if col1.button("👍", key=f"up_{query_id}"):
+                            save_feedback(query_id, 1)
+                            st.session_state.voted.add(query_id)
+                            st.rerun()
+                        if col2.button("👎", key=f"down_{query_id}"):
+                            save_feedback(query_id, -1)
+                            st.session_state.voted.add(query_id)
+                            st.rerun()
+                    else:
+                        # Можно оставить пустое место или поставить галочку
+                        st.caption("Оценка учтена")
+
 
 # Прием ввода через чат
 if prompt := st.chat_input("Задайте вопрос по документации..."):
