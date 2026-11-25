@@ -47,7 +47,7 @@ RELEVANCY_PROMPT = """Оцени, отвечает ли ответ на вопр
 Число:"""
 
 
-def ask_llm(prompt: str, temperature: float = 0.1) -> str:
+def ask_llm(prompt: str, temperature: float = 0.0) -> str:
     payload = json.dumps({
         "model": MODEL,
         "prompt": prompt,
