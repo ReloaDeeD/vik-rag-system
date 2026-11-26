@@ -18,7 +18,7 @@ def ask_llm(prompt: str) -> str:
         "model": MODEL,
         "prompt": prompt,
         "stream": False,
-        "options": {"temperature": 0.1},
+        "options": {"temperature": 0.2},
     }).encode("utf-8")
     req = urllib.request.Request(
         OLLAMA_URL, data=payload, headers={"Content-Type": "application/json"}

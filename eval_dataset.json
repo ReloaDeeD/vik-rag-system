@@ -238,5 +238,23 @@
     "expected_sources": [],
     "expected_answer": "нет ответа",
     "category": "ловушка"
-  }
-]
+  },
+  {
+  "question": "как часто менять пароль?",
+  "expected_sources": ["security.md"],
+  "expected_answer": "каждые 90 дней",
+  "category": "регрессия"
+},
+{
+  "question": "что делать при подозрительном письме?",
+  "expected_sources": ["security.md"],
+  "expected_answer": "переслать в отдел ИБ на адрес security@company.ru",
+  "category": "регрессия"
+},
+{
+  "question": "где хранятся логи?",
+  "expected_sources": [],
+  "expected_answer": "нет ответа",
+  "category": "регрессия"
+}
+] 

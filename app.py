@@ -23,7 +23,7 @@ UPLOAD_DIR.mkdir(exist_ok=True)
 
 
 # --- Вспомогательные функции ---
-def ask_llm(prompt: str, temperature: float = 0.1) -> str:
+def ask_llm(prompt: str, temperature: float = 0.2) -> str:
     payload = json.dumps({
         "model": MODEL,
         "prompt": prompt,
@@ -105,7 +105,7 @@ def handle_rag_query(prompt: str, history_messages: list):
         f"[{n}] ({h.title}, {h.locator or f'фрагмент {h.chunk_index}'}) {h.content}"
         for n, h in enumerate(final_hits, start=1)
     )
-    chat_history = "\n".join(f"{m['role']}: {m['content']}" for m in history_messages[-5:])
+    chat_history = "\n".join(f"Пользователь: {m['content']}" for m in history_messages[-3:] if m['role'] == 'user')
     try:
         answer = ask_llm(RAG_PROMPT.format(history=chat_history, context=context, question=prompt))
     except Exception as e:

@@ -2,12 +2,12 @@ import hashlib
 import sqlite3
 import sys
 import re
+import argparse
 from pathlib import Path
 
 import chromadb
 from chromadb.utils import embedding_functions
 
-# Импортируем наш новый парсер
 from document_parser import parse_document, ParsedBlock
 
 DB_PATH = Path("data/metadata.db")
@@ -15,34 +15,23 @@ CHROMA_PATH = Path("data/chroma")
 EMBED_MODEL = "paraphrase-multilingual-MiniLM-L12-v2"
 ALLOWED = {".txt", ".md", ".pdf", ".docx"} 
 
-def chunk_blocks(blocks: list[ParsedBlock], min_size: int = 250, max_size: int = 800) -> list[tuple[str, str]]:
-    """
-    Умный чанкинг:
-    1. Склеивает короткие абзацы, пока не наберется min_size.
-    2. Если чанк превышает max_size, режет его по предложениям, а не по символам.
-    3. Формирует красивый локатор (например, "параграф 4 – параграф 6").
-    """
+def chunk_blocks(blocks: list[ParsedBlock], min_size: int = 150, max_size: int = 400) -> list[tuple[str, str]]:
+    # ... (оставляем твой код чанкинга без изменений) ...
     chunks = []
     current_text = ""
     current_locs = []
 
     def flush_chunk():
-        """Сохраняет накопленный текст в список чанков."""
         nonlocal current_text, current_locs
         if not current_text.strip():
             return
-
-        # Формируем красивый локатор
         if len(current_locs) == 1:
             loc_str = current_locs[0]
         else:
-            # Убираем дубликаты локаторов, сохраняя порядок
             unique_locs = list(dict.fromkeys(current_locs))
             loc_str = f"{unique_locs[0]} – {unique_locs[-1]}" if len(unique_locs) > 1 else unique_locs[0]
 
-        # Если текст слишком длинный, режем по предложениям
         if len(current_text) > max_size:
-            # Разбиваем по точкам, вопросительным и восклицательным знакам
             sentences = re.split(r'(?<=[.!?])\s+', current_text)
             temp_text = ""
             for sent in sentences:
@@ -55,8 +44,6 @@ def chunk_blocks(blocks: list[ParsedBlock], min_size: int = 250, max_size: int =
                 chunks.append((temp_text.strip(), loc_str))
         else:
             chunks.append((current_text.strip(), loc_str))
-
-        # Сбрасываем буфер
         current_text = ""
         current_locs = []
 
@@ -64,48 +51,53 @@ def chunk_blocks(blocks: list[ParsedBlock], min_size: int = 250, max_size: int =
         text = block.text.strip()
         if not text:
             continue
-
-        # Если добавление нового блока превысит max_size, а мы уже набрали min_size — сохраняем чанк
         if len(current_text) + len(text) > max_size and len(current_text) >= min_size:
             flush_chunk()
-
         current_text += text + " "
         current_locs.append(block.locator)
 
-    # Сохраняем то, что осталось в буфере в конце
     flush_chunk()
-    
     return chunks
 
 def connect():
     ef = embedding_functions.SentenceTransformerEmbeddingFunction(model_name=EMBED_MODEL)
     sql = sqlite3.connect(DB_PATH)
+    
+    # Читаем схему из папки sql
+    schema_path = Path("sql/schema.sql")
+    if schema_path.exists():
+        with open(schema_path, "r", encoding="utf-8") as f:
+            sql.executescript(f.read())
+        sql.commit()
+    else:
+        print(f"ВНИМАНИЕ: Файл {schema_path} не найден!")
+    
     client = chromadb.PersistentClient(path=str(CHROMA_PATH))
     coll = client.get_or_create_collection("corp_docs", embedding_function=ef)
     return sql, coll
 
-def index_document(path: Path, sql, coll) -> str:
-    # 1. Считаем хэш по БАЙТАМ файла, а не по тексту (надежнее для PDF)
+def index_document(path: Path, sql, coll, force: bool = False) -> str:
     file_bytes = path.read_bytes()
     finger = hashlib.sha256(file_bytes).hexdigest()
     cur = sql.cursor()
 
-    # 2. Проверка идемпотентности
-    row = cur.execute("SELECT id FROM documents WHERE content_hash = ?", (finger,)).fetchone()
-    if row:
-        return f"{path.name}: без изменений (id {row[0]}), пропускаю"
+    if not force:
+        row = cur.execute("SELECT id FROM documents WHERE content_hash = ?", (finger,)).fetchone()
+        if row:
+            return f"{path.name}: без изменений (id {row[0]}), пропускаю"
 
-    # 3. Удаление старой версии
     old = cur.execute("SELECT id FROM documents WHERE source_path = ?", (str(path),)).fetchone()
     if old:
         old_id = old[0]
         old_chunks = cur.execute("SELECT id FROM chunks WHERE document_id = ?", (old_id,)).fetchall()
         if old_chunks:
-            coll.delete(ids=[f"chunk_{r[0]}" for r in old_chunks])
+            try:
+                coll.delete(ids=[f"chunk_{r[0]}" for r in old_chunks])
+            except Exception:
+                pass
         cur.execute("DELETE FROM chunks WHERE document_id = ?", (old_id,))
         cur.execute("DELETE FROM documents WHERE id = ?", (old_id,))
 
-    # 4. Парсинг документа
     try:
         blocks = parse_document(path)
     except Exception as e:
@@ -114,17 +106,13 @@ def index_document(path: Path, sql, coll) -> str:
     if not blocks:
         return f"{path.name}: пропущен (нет текста)"
 
-    # 5. Вставка документа в SQL
     cur.execute(
         "INSERT INTO documents (title, source_path, format, content_hash) VALUES (?, ?, ?, ?)",
         (path.name, str(path), path.suffix.lstrip("."), finger),
     )
     doc_id = cur.lastrowid
 
-    # 6. Чанкинг и запись в SQL + Chroma
     sql_ids, texts, metadatas = [], [], []
-    
-    # Получаем список (текст, локатор)
     chunks_with_locs = chunk_blocks(blocks)
     
     for i, (chunk_text, locator) in enumerate(chunks_with_locs):
@@ -149,10 +137,15 @@ def index_document(path: Path, sql, coll) -> str:
         metadatas=metadatas,
     )
     sql.commit()
-    return f"{path.name}: проиндексирован, чанков: {len(sql_ids)} (id документа {doc_id})"
+    return f"{path.name}: проиндексирован, чанков: {len(sql_ids)}"
 
 if __name__ == "__main__":
-    target = Path(sys.argv[1]) if len(sys.argv) > 1 else Path("docs")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("path", nargs="?", default="docs")
+    parser.add_argument("--force", action="store_true")
+    args = parser.parse_args()
+
+    target = Path(args.path)
     sql, coll = connect()
     
     if target.is_file():
@@ -161,7 +154,7 @@ if __name__ == "__main__":
         files = sorted(p for p in target.iterdir() if p.suffix.lower() in ALLOWED)
         
     for f in files:
-        print(index_document(f, sql, coll))
+        print(index_document(f, sql, coll, force=args.force))
         
     n_docs = sql.execute("SELECT COUNT(*) FROM documents").fetchone()[0]
     n_chunks = sql.execute("SELECT COUNT(*) FROM chunks").fetchone()[0]

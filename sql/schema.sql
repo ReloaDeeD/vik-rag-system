@@ -25,4 +25,5 @@ CREATE TABLE IF NOT EXISTS query_log (
     answer           TEXT,
     source_chunk_ids TEXT,
     best_distance    REAL
+    feedback INTEGER
 );
